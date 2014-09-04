@@ -21,7 +21,12 @@ Picker.prototype.handleDocumentClose = function() {
 };
 
 Picker.prototype.onChangeDate = function(e) {
+  this.setDateTime({
+    date: e.currentTarget.value,
+    time: this.$picker.find('[name=time]').val()
+  });
 
+  this.updateCalendar();
 };
 
 Picker.prototype.onChangeTime = function(e) {
