@@ -1,22 +1,22 @@
-#datetime-picker {
+#datepicker {
   background: #f7f7f7;
   box-shadow: 0 2px 7px rgba(0,0,0,0.2);
   border-radius: 3px;
   width: 300px;
   padding: 10px;
   margin-top: 10px;
-}
 
-#datetime-picker .calendar {
-  margin-top: 15px;
-}
+  .calendar {
+    margin-top: 15px;
+  }
 
-#datetime-picker .datepicker-inline {
-  width: 100%;
-}
+  .datepicker-inline {
+    width: 100%;
+  }
 
-#datetime-picker .datepicker-days table {
-  width: 100% !important;
+  .datepicker-days table {
+    width: 100% !important;
+  }
 }
 
 

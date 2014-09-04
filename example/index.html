@@ -2,18 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>DateTime Picker Example</title>
+  <title>DatePicker Example</title>
 
   <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" href="../bower_components/bootstrap-datepicker/css/datepicker3.css">
-  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="../.tmp/main.css">
 
   <script src="../node_modules/jquery/dist/jquery.js"></script>
   <script src="../node_modules/lodash/dist/lodash.js"></script>
+  <script src="../node_modules/handlebars/dist/handlebars.runtime.js"></script>
   <script src="../node_modules/moment/moment.js"></script>
   <script src="../bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 
-  <script src="../src/datetime-picker.js"></script>
+  <script src="../dist/datepicker.js"></script>
   <script src="main.js"></script>
 </head>
 <body>
@@ -23,25 +24,6 @@
     <span>to</span>
     <input type="text" name="end" class="">
   </div>
-
-  <script type="text/x-template" id="tmpl-picker">
-    <div id="datetime-picker">
-      <div class="row">
-        <div class="col-lg-6">
-          <label for="date-picker">Date</label>
-          <input type="text" value="<%= date %>" name="date" id="date-picker" class="form-control">
-        </div>
-        <div class="col-lg-6">
-        <label for="time-picker">Time</label>
-          <input type="text" value="<%= time %>" name="time" id="time-picker" class="form-control">
-        </div>
-      </div>
-
-      <div class="calendar"></div>
-
-      <a href="#" class="btn btn-primary done">Done</a>
-    </div>
-  </script>
 
 </body>
 </html>
