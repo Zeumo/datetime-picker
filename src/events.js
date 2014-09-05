@@ -9,29 +9,13 @@ Picker.prototype.delegateEvents = function(events, $el) {
   }, this);
 };
 
-Picker.prototype.handleDocumentClose = function() {
+Picker.prototype.handlePickerClose = function() {
   $(document).on('click', _.bind(function(e) {
-    if (e.target.tagName === 'INPUT') return;
-    if (e.target.tagName === 'TD') return;
+    var isInput  = e.target.tagName === 'INPUT',
+        isDetached = !$(document).find(e.target).length,
+        isPicker = !!$(e.target).closest('#datepicker').length;
 
-    if (!$(e.target).closest('#datepicker').length) {
-      this.close();
-    }
+    if (isInput || isDetached || isPicker) return;
+    this.close();
   }, this));
-};
-
-Picker.prototype.onChangeDate = function(e) {
-  this.setDateTime({
-    date: e.currentTarget.value,
-    time: this.$picker.find('[name=time]').val()
-  });
-
-  this.updateCalendar();
-};
-
-Picker.prototype.onChangeTime = function(e) {
-  this.setDateTime({
-    date: this.$picker.find('[name=date]').val(),
-    time: e.currentTarget.value.toUpperCase()
-  });
 };

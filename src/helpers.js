@@ -14,34 +14,40 @@ Picker.prototype.dateTime = function(offsetHours) {
 
 Picker.prototype.setDateTime = function(obj) {
   var date = obj.date,
-      time = obj.time,
-      val, m;
+      time = this.normalizeTime(obj.time),
+      m    = moment([date, time].join(' ')),
+      val, datetime;
 
+  // Reset the moment object if we got an invalid date
+  if (!m.isValid()) {
+    datetime = this.dateTime();
+    m = moment([datetime.date, datetime.time].join(' '));
+  }
+
+  val = m.format([this.options.dateFormat, this.options.timeFormat].join(' '));
+
+  this.$el.val(val);
+  this.$date.val(m.format(this.options.dateFormat));
+  this.$time.val(m.format(this.options.timeFormat));
+};
+
+Picker.prototype.normalizeTime = function(time) {
   // Normalize minutes
   if (!(/\d:\d{2}/).test(time)) {
     time = time.replace(/(^\d+)/, "$1:00");
   }
 
   // Normalize spacing
-  if (!(/\s[am|pm]/i).test(time)) {
-    time = time.replace(/(am|pm)/i, " $1");
+  if (!(/\s[a|p]/i).test(time)) {
+    time = time.replace(/(a|p)/i, " $1");
   }
 
-  m = moment(date + ' ' + time);
-
-  if (!m.isValid()) {
-    var datetime = this.dateTime();
-    m   = moment(datetime.date + ' ' + datetime.time);
+  // Normalize meridian
+  if (!(/m/i).test(time)) {
+    time = time.replace(/(a|p)/i, "$1m");
   }
 
-  val = m.format(this.options.dateFormat + ' ' + this.options.timeFormat);
-
-  this.$el.val(val);
-
-  if (this.$picker) {
-    this.$picker.find('[name=date]').val(m.format(this.options.dateFormat));
-    this.$picker.find('[name=time]').val(m.format(this.options.timeFormat));
-  }
+  return time;
 };
 
 Picker.prototype.hasPrecedingPicker = function() {

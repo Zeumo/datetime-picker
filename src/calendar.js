@@ -4,30 +4,26 @@ Picker.prototype.initializeCalendar = function() {
   };
 
   this.$calendar = this.$picker.find('.calendar').datepicker({
-    startDate: '-0d'
+    startDate: '-1d'
   });
 
   this.updateCalendar();
-  this.delegateEvents(this.calendarEvents, $calendar);
+  this.delegateEvents(this.calendarEvents, this.$calendar);
 };
 
 Picker.prototype.updateCalendar = function() {
-  this.$calendar.datepicker('update',
-    this.$picker.find('[name=date]').val());
+  this.$calendar.datepicker('update', this.$date.val());
 };
 
 Picker.prototype.onCalendarChangeDate = function(e) {
-  var date = e.format(),
-      $date = this.$picker.find('[name=date]'),
-      $time = this.$picker.find('[name=time]');
+  var date = e.format();
 
   if (date) {
-    $date.val(date);
+    this.$date.val(date);
 
     this.setDateTime({
       date: date,
-      time: $time.val()
+      time: this.$time.val()
     });
   }
 };
-

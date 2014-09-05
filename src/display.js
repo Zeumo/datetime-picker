@@ -1,6 +1,6 @@
 Picker.prototype.show = function() {
   var elBottom = this.$el.height() + this.$el.offset().top;
-  var elLeft    = this.$el.offset().left;
+  var elLeft   = this.$el.offset().left;
 
   this.$picker.css({
     top: elBottom + 10 + 'px',
