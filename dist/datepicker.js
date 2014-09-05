@@ -20,7 +20,7 @@
   }, options);
 
   this.events = {
-    'focus': this.show
+    'focus': this.onFocus
   };
 
   this.pickerEvents = {
@@ -31,13 +31,37 @@
 
   this.$picker = $(this.options.template(this.dateTime()));
 
+  this.$date = this.$picker.find('[name=date]');
+  this.$time = this.$picker.find('[name=time]');
+
   this.setDateTime(this.dateTime());
 
   this.delegateEvents(this.events, this.$el);
   this.delegateEvents(this.pickerEvents, this.$picker);
-  this.handleDocumentClose();
+  this.handlePickerClose();
 
-  this.render();
+  this.initializeCalendar();
+};
+
+Picker.prototype.onFocus = function(e) {
+  this.show();
+  this.$date.focus();
+};
+
+Picker.prototype.onChangeDate = function(e) {
+  this.setDateTime({
+    date: e.currentTarget.value,
+    time: this.$time.val()
+  });
+
+  this.updateCalendar();
+};
+
+Picker.prototype.onChangeTime = function(e) {
+  this.setDateTime({
+    date: this.$date.val(),
+    time: e.currentTarget.value.toUpperCase()
+  });
 };
 
 Picker.prototype.delegateEvents = function(events, $el) {
@@ -51,36 +75,20 @@ Picker.prototype.delegateEvents = function(events, $el) {
   }, this);
 };
 
-Picker.prototype.handleDocumentClose = function() {
+Picker.prototype.handlePickerClose = function() {
   $(document).on('click', _.bind(function(e) {
-    if (e.target.tagName === 'INPUT') return;
-    if (e.target.tagName === 'TD') return;
+    var isInput  = e.target.tagName === 'INPUT',
+        isDetached = !$(document).find(e.target).length,
+        isPicker = !!$(e.target).closest('#datepicker').length;
 
-    if (!$(e.target).closest('#datepicker').length) {
-      this.close();
-    }
+    if (isInput || isDetached || isPicker) return;
+    this.close();
   }, this));
-};
-
-Picker.prototype.onChangeDate = function(e) {
-  this.setDateTime({
-    date: e.currentTarget.value,
-    time: this.$picker.find('[name=time]').val()
-  });
-
-  this.updateCalendar();
-};
-
-Picker.prototype.onChangeTime = function(e) {
-  this.setDateTime({
-    date: this.$picker.find('[name=date]').val(),
-    time: e.currentTarget.value.toUpperCase()
-  });
 };
 
 Picker.prototype.show = function() {
   var elBottom = this.$el.height() + this.$el.offset().top;
-  var elLeft    = this.$el.offset().left;
+  var elLeft   = this.$el.offset().left;
 
   this.$picker.css({
     top: elBottom + 10 + 'px',
@@ -121,34 +129,40 @@ Picker.prototype.dateTime = function(offsetHours) {
 
 Picker.prototype.setDateTime = function(obj) {
   var date = obj.date,
-      time = obj.time,
-      val, m;
+      time = this.normalizeTime(obj.time),
+      m    = moment([date, time].join(' ')),
+      val, datetime;
 
+  // Reset the moment object if we got an invalid date
+  if (!m.isValid()) {
+    datetime = this.dateTime();
+    m = moment([datetime.date, datetime.time].join(' '));
+  }
+
+  val = m.format([this.options.dateFormat, this.options.timeFormat].join(' '));
+
+  this.$el.val(val);
+  this.$date.val(m.format(this.options.dateFormat));
+  this.$time.val(m.format(this.options.timeFormat));
+};
+
+Picker.prototype.normalizeTime = function(time) {
   // Normalize minutes
   if (!(/\d:\d{2}/).test(time)) {
     time = time.replace(/(^\d+)/, "$1:00");
   }
 
   // Normalize spacing
-  if (!(/\s[am|pm]/i).test(time)) {
-    time = time.replace(/(am|pm)/i, " $1");
+  if (!(/\s[a|p]/i).test(time)) {
+    time = time.replace(/(a|p)/i, " $1");
   }
 
-  m = moment(date + ' ' + time);
-
-  if (!m.isValid()) {
-    var datetime = this.dateTime();
-    m   = moment(datetime.date + ' ' + datetime.time);
+  // Normalize meridian
+  if (!(/m/i).test(time)) {
+    time = time.replace(/(a|p)/i, "$1m");
   }
 
-  val = m.format(this.options.dateFormat + ' ' + this.options.timeFormat);
-
-  this.$el.val(val);
-
-  if (this.$picker) {
-    this.$picker.find('[name=date]').val(m.format(this.options.dateFormat));
-    this.$picker.find('[name=time]').val(m.format(this.options.timeFormat));
-  }
+  return time;
 };
 
 Picker.prototype.hasPrecedingPicker = function() {
@@ -162,7 +176,7 @@ Picker.prototype.initializeCalendar = function() {
   };
 
   this.$calendar = this.$picker.find('.calendar').datepicker({
-    startDate: '-0d'
+    startDate: '-1d'
   });
 
   this.updateCalendar();
@@ -170,28 +184,20 @@ Picker.prototype.initializeCalendar = function() {
 };
 
 Picker.prototype.updateCalendar = function() {
-  this.$calendar.datepicker('update',
-    this.$picker.find('[name=date]').val());
+  this.$calendar.datepicker('update', this.$date.val());
 };
 
 Picker.prototype.onCalendarChangeDate = function(e) {
-  var date = e.format(),
-      $date = this.$picker.find('[name=date]'),
-      $time = this.$picker.find('[name=time]');
+  var date = e.format();
 
   if (date) {
-    $date.val(date);
+    this.$date.val(date);
 
     this.setDateTime({
       date: date,
-      time: $time.val()
+      time: this.$time.val()
     });
   }
-};
-
-
-Picker.prototype.render = function() {
-  this.initializeCalendar();
 };
 
 $.fn[pluginName] = function (options) {
