@@ -43,12 +43,11 @@ gulp.task('templates', function(){
 
 gulp.task('build', ['templates'], function() {
   gulp.src([
-    'src/constructor.js',
+    'src/picker.js',
     'src/events.js',
     'src/display.js',
     'src/helpers.js',
     'src/calendar.js',
-    'src/render.js',
     'src/plugin.js',
     '.tmp/templates.js'
   ])

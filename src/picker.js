@@ -9,7 +9,7 @@ Picker = function(el, options) {
   }, options);
 
   this.events = {
-    'focus': this.show
+    'focus': this.onFocus
   };
 
   this.pickerEvents = {
@@ -20,11 +20,35 @@ Picker = function(el, options) {
 
   this.$picker = $(this.options.template(this.dateTime()));
 
+  this.$date = this.$picker.find('[name=date]');
+  this.$time = this.$picker.find('[name=time]');
+
   this.setDateTime(this.dateTime());
 
   this.delegateEvents(this.events, this.$el);
   this.delegateEvents(this.pickerEvents, this.$picker);
-  this.handleDocumentClose();
+  this.handlePickerClose();
 
-  this.render();
+  this.initializeCalendar();
+};
+
+Picker.prototype.onFocus = function(e) {
+  this.show();
+  this.$date.focus();
+};
+
+Picker.prototype.onChangeDate = function(e) {
+  this.setDateTime({
+    date: e.currentTarget.value,
+    time: this.$time.val()
+  });
+
+  this.updateCalendar();
+};
+
+Picker.prototype.onChangeTime = function(e) {
+  this.setDateTime({
+    date: this.$date.val(),
+    time: e.currentTarget.value.toUpperCase()
+  });
 };
