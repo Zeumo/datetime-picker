@@ -1,9 +1,9 @@
 Picker.prototype.show = function() {
-  var elBottom = this.$el.height() + this.$el.offset().top;
-  var elLeft   = this.$el.offset().left;
+  var elBottom = this.$el.height() + this.$el.offset().top,
+      elLeft   = this.$el.offset().left;
 
   this.$picker.css({
-    top: elBottom + 10 + 'px',
+    top: elBottom + 5 + 'px',
     left: elLeft + 'px',
     position: 'absolute'
   });
