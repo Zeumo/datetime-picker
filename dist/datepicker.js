@@ -107,11 +107,11 @@ Picker.prototype.handlePickerClose = function() {
 };
 
 Picker.prototype.show = function() {
-  var elBottom = this.$el.height() + this.$el.offset().top;
-  var elLeft   = this.$el.offset().left;
+  var elBottom = this.$el.height() + this.$el.offset().top,
+      elLeft   = this.$el.offset().left;
 
   this.$picker.css({
-    top: elBottom + 10 + 'px',
+    top: elBottom + 5 + 'px',
     left: elLeft + 'px',
     position: 'absolute'
   });
@@ -191,7 +191,7 @@ Picker.prototype.initializeCalendar = function() {
   };
 
   this.$calendar = this.$picker.find('.calendar').datepicker({
-    startDate: '-1d'
+    startDate: '-0d'
   });
 
   this.updateCalendar();
@@ -239,7 +239,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   if (helper = helpers.time) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.time); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "\" name=\"time\" id=\"time-picker\" class=\"form-control\">\n    </div>\n  </div>\n\n  <div class=\"calendar\"></div>\n\n  <a href=\"#\" class=\"btn btn-primary pull-left done\">Done</a>\n  <a href=\"#\" class=\"btn btn-secondary pull-right today\">Today</a>\n</div>\n";
+    + "\" name=\"time\" id=\"time-picker\" class=\"form-control\">\n    </div>\n  </div>\n\n  <div class=\"calendar\"></div>\n\n  <a href=\"#\" class=\"btn btn-primary pull-right done\">Done</a>\n  <a href=\"#\" class=\"btn btn-secondary pull-left today\">Today</a>\n</div>\n";
   return buffer;
   });
 
