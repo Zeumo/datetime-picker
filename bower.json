@@ -1,6 +1,6 @@
 {
   "name": "datetime-picker",
-  "devDependencies": {
+  "dependencies": {
     "bootstrap-datepicker": "~1.3.0"
   }
 }
