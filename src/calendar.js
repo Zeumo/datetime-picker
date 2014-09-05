@@ -4,7 +4,7 @@ Picker.prototype.initializeCalendar = function() {
   };
 
   this.$calendar = this.$picker.find('.calendar').datepicker({
-    startDate: '-1d'
+    startDate: '-0d'
   });
 
   this.updateCalendar();
