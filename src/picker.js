@@ -16,8 +16,8 @@ Picker = function(el, options) {
   };
 
   this.pickerEvents = {
-    'click .done': this.done,
-    'click .today': this.today,
+    'click .done': this.onDone,
+    'click .today': this.onToday,
     'change [name=date]': this.onChangeDate,
     'change [name=time]': this.onChangeTime
   };
@@ -65,12 +65,12 @@ Picker.prototype.onChangeTime = function(e) {
   });
 };
 
-Picker.prototype.done = function(e) {
+Picker.prototype.onDone = function(e) {
   e.preventDefault();
   this.close();
 };
 
-Picker.prototype.today = function(e) {
+Picker.prototype.onToday = function(e) {
   e.preventDefault();
 
   this.$date.val(this.dateTime().date);
