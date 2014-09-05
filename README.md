@@ -34,6 +34,7 @@ Default: `JST.datepicker`
 * lodash
 * handlebars
 * moment
+* bootstrap-datepicker
 
 ## Development
 
