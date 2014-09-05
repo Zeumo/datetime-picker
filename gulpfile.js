@@ -5,20 +5,14 @@ var _        = require('lodash'),
   concat     = require('gulp-concat'),
   wrap       = require('gulp-wrap'),
   sass       = require('gulp-sass'),
-  handlebars = require('gulp-handlebars');
+  handlebars = require('gulp-handlebars'),
+  webserver  = require('gulp-webserver');
 
-gulp.task('default', ['build', 'sass']);
+gulp.task('default', ['build', 'sass', 'watch', 'server']);
 
 gulp.task('watch', function() {
-  var reload = livereload();
-
   gulp.watch('src/*', ['build']);
   gulp.watch('example/*.scss', ['sass']);
-
-  gulp.watch(['dist/*', 'example/*', '.tmp/*'])
-    .on('change', function(file) {
-      reload.changed(file.path);
-    });
 });
 
 gulp.task('sass', function() {
@@ -59,4 +53,12 @@ gulp.task('build', ['templates'], function() {
     version: pkg.version
   }))
   .pipe(gulp.dest('dist/'));
+});
+
+gulp.task('server', function() {
+  gulp.src('.')
+    .pipe(webserver({
+      livereload: true,
+      open: true
+    }));
 });

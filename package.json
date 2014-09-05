@@ -21,6 +21,7 @@
     "gulp-declare": "^0.3.0",
     "gulp-handlebars": "^2.2.0",
     "gulp-sass": "^0.7.3",
+    "gulp-webserver": "^0.7.2",
     "gulp-wrap": "^0.3.0",
     "normalize.css": "^3.0.1"
   }
