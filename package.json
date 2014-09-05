@@ -2,11 +2,11 @@
   "name": "datetime-picker",
   "version": "0.0.0",
   "description": "An unobtrusive datetime picker",
-  "main": "index.js",
+  "main": "dist/datepicker.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Nic Aitch",
   "license": "MIT",
   "dependencies": {
     "handlebars": "^1.3",
