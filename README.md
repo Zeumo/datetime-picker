@@ -28,6 +28,14 @@ Default: `'h:mm A'`
 
 Default: `JST.datepicker`
 
+**outputTo**
+
+Default: `this.$el`
+
+**onChange**
+
+Default: `_.noop`
+
 ## Dependencies
 
 * jQuery

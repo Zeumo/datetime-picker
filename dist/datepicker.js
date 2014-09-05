@@ -11,40 +11,62 @@
 
   Picker = function(el, options) {
   this.$el   = $(el);
-  this.$body = $('body');
 
+  // Options
   this.options = _.extend({
     dateFormat: 'MM/DD/YYYY',
     timeFormat: 'h:mm A',
     template: JST.datepicker,
+    outputTo: this.$el,
+    onChange: _.noop
   }, options);
 
+  // Events
   this.events = {
-    'focus': this.onFocus
+    'click': this.onClick
   };
 
+  if (this.$el[0].tagName === 'INPUT') {
+    this.events = {
+      'focus': this.onClick
+    };
+  }
+
   this.pickerEvents = {
-    'click .done': this.done,
-    'click .today': this.today,
+    'click .done': this.onDone,
+    'click .today': this.onToday,
     'change [name=date]': this.onChangeDate,
     'change [name=time]': this.onChangeTime
   };
 
+  // Convenience vars
+  this.$body   = $('body');
   this.$picker = $(this.options.template(this.dateTime()));
+  this.$date   = this.$picker.find('[name=date]');
+  this.$time   = this.$picker.find('[name=time]');
 
-  this.$date = this.$picker.find('[name=date]');
-  this.$time = this.$picker.find('[name=time]');
+  // Standardize outputTo
+  if (!this.options.outputTo.jquery) {
+    this.options.outputTo = $(this.options.outputTo);
+  }
 
+  // Set current date and time
   this.setDateTime(this.dateTime());
 
+  // Delegate events
   this.delegateEvents(this.events, this.$el);
   this.delegateEvents(this.pickerEvents, this.$picker);
   this.handlePickerClose();
 
+  // Initialize calendar picker
   this.initializeCalendar();
+
+  return this;
 };
 
-Picker.prototype.onFocus = function(e) {
+Picker.prototype.onClick = function(e) {
+  e.preventDefault();
+
   this.show();
   this.$date.focus();
 };
@@ -65,12 +87,12 @@ Picker.prototype.onChangeTime = function(e) {
   });
 };
 
-Picker.prototype.done = function(e) {
+Picker.prototype.onDone = function(e) {
   e.preventDefault();
   this.close();
 };
 
-Picker.prototype.today = function(e) {
+Picker.prototype.onToday = function(e) {
   e.preventDefault();
 
   this.$date.val(this.dateTime().date);
@@ -89,12 +111,14 @@ Picker.prototype.delegateEvents = function(events, $el) {
 };
 
 Picker.prototype.handlePickerClose = function() {
+  var self = this;
+
   var handler = function(e) {
-    var isInput    = e.target.tagName === 'INPUT',
+    var isEl       = !!$(e.target).closest(self.$el).length,
         isDetached = !$(document).find(e.target).length,
         isPicker   = !!$(e.target).closest('#datepicker').length;
 
-    if (isInput || isDetached || isPicker) return;
+    if (isEl || isDetached || isPicker) return;
     this.close();
   };
 
@@ -156,9 +180,11 @@ Picker.prototype.setDateTime = function(obj) {
 
   val = m.format([this.options.dateFormat, this.options.timeFormat].join(' '));
 
-  this.$el.val(val);
+  this.options.outputTo.val(val);
   this.$date.val(m.format(this.options.dateFormat));
   this.$time.val(m.format(this.options.timeFormat));
+
+  this.options.onChange();
 };
 
 Picker.prototype.normalizeTime = function(time) {
@@ -231,11 +257,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, helper, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div id=\"datepicker\">\n  <div class=\"row\">\n    <div class=\"col-lg-6\">\n      <label for=\"date-picker\">Date</label>\n      <input type=\"text\" value=\"";
+  buffer += "<div id=\"datepicker\">\n  <div class=\"row\">\n    <div class=\"col-xs-6\">\n      <label for=\"date-picker\">Date</label>\n      <input type=\"text\" value=\"";
   if (helper = helpers.date) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.date); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "\" name=\"date\" id=\"date-picker\" class=\"form-control\">\n    </div>\n    <div class=\"col-lg-6\">\n    <label for=\"time-picker\">Time</label>\n      <input type=\"text\" value=\"";
+    + "\" name=\"date\" id=\"date-picker\" class=\"form-control\">\n    </div>\n    <div class=\"col-xs-6\">\n    <label for=\"time-picker\">Time</label>\n      <input type=\"text\" value=\"";
   if (helper = helpers.time) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.time); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
