@@ -1,6 +1,5 @@
 Picker = function(el, options) {
   this.$el   = $(el);
-  this.$body = $('body');
 
   // Options
   this.options = _.extend({
@@ -12,7 +11,7 @@ Picker = function(el, options) {
 
   // Events
   this.events = {
-    'focus': this.onFocus
+    'click': this.onClick
   };
 
   this.pickerEvents = {
@@ -23,6 +22,7 @@ Picker = function(el, options) {
   };
 
   // Convenience vars
+  this.$body   = $('body');
   this.$picker = $(this.options.template(this.dateTime()));
   this.$date   = this.$picker.find('[name=date]');
   this.$time   = this.$picker.find('[name=time]');
@@ -46,7 +46,9 @@ Picker = function(el, options) {
   return this;
 };
 
-Picker.prototype.onFocus = function(e) {
+Picker.prototype.onClick = function(e) {
+  e.preventDefault();
+
   this.show();
   this.$date.focus();
 };
