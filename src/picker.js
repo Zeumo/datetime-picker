@@ -42,6 +42,8 @@ Picker = function(el, options) {
 
   // Initialize calendar picker
   this.initializeCalendar();
+
+  return this;
 };
 
 Picker.prototype.onFocus = function(e) {
