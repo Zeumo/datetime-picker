@@ -14,6 +14,12 @@ Picker = function(el, options) {
     'click': this.onClick
   };
 
+  if (this.$el[0].tagName === 'INPUT') {
+    this.events = {
+      'focus': this.onClick
+    };
+  }
+
   this.pickerEvents = {
     'click .done': this.onDone,
     'click .today': this.onToday,
