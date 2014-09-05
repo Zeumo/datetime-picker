@@ -29,6 +29,8 @@ Picker.prototype.setDateTime = function(obj) {
   this.options.outputTo.val(val);
   this.$date.val(m.format(this.options.dateFormat));
   this.$time.val(m.format(this.options.timeFormat));
+
+  this.options.onChange();
 };
 
 Picker.prototype.normalizeTime = function(time) {
