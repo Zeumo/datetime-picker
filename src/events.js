@@ -10,12 +10,14 @@ Picker.prototype.delegateEvents = function(events, $el) {
 };
 
 Picker.prototype.handlePickerClose = function() {
+  var self = this;
+
   var handler = function(e) {
-    var isInput    = e.target.tagName === 'INPUT',
+    var isEl       = !!$(e.target).closest(self.$el).length,
         isDetached = !$(document).find(e.target).length,
         isPicker   = !!$(e.target).closest('#datepicker').length;
 
-    if (isInput || isDetached || isPicker) return;
+    if (isEl || isDetached || isPicker) return;
     this.close();
   };
 
