@@ -2,6 +2,7 @@ Picker = function(el, options) {
   this.$el   = $(el);
   this.$body = $('body');
 
+  // Options
   this.options = _.extend({
     dateFormat: 'MM/DD/YYYY',
     timeFormat: 'h:mm A',
@@ -9,6 +10,7 @@ Picker = function(el, options) {
     outputTo: this.$el
   }, options);
 
+  // Events
   this.events = {
     'focus': this.onFocus
   };
@@ -20,6 +22,7 @@ Picker = function(el, options) {
     'change [name=time]': this.onChangeTime
   };
 
+  // Convenience vars
   this.$picker = $(this.options.template(this.dateTime()));
   this.$date   = this.$picker.find('[name=date]');
   this.$time   = this.$picker.find('[name=time]');
@@ -29,12 +32,15 @@ Picker = function(el, options) {
     this.options.outputTo = $(this.options.outputTo);
   }
 
+  // Set current date and time
   this.setDateTime(this.dateTime());
 
+  // Delegate events
   this.delegateEvents(this.events, this.$el);
   this.delegateEvents(this.pickerEvents, this.$picker);
   this.handlePickerClose();
 
+  // Initialize calendar picker
   this.initializeCalendar();
 };
 
