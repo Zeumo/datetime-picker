@@ -6,6 +6,7 @@ Picker = function(el, options) {
     dateFormat: 'MM/DD/YYYY',
     timeFormat: 'h:mm A',
     template: JST.datepicker,
+    outputTo: this.$el
   }, options);
 
   this.events = {
@@ -20,9 +21,13 @@ Picker = function(el, options) {
   };
 
   this.$picker = $(this.options.template(this.dateTime()));
+  this.$date   = this.$picker.find('[name=date]');
+  this.$time   = this.$picker.find('[name=time]');
 
-  this.$date = this.$picker.find('[name=date]');
-  this.$time = this.$picker.find('[name=time]');
+  // Standardize outputTo
+  if (!this.options.outputTo.jquery) {
+    this.options.outputTo = $(this.options.outputTo);
+  }
 
   this.setDateTime(this.dateTime());
 

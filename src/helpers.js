@@ -26,7 +26,7 @@ Picker.prototype.setDateTime = function(obj) {
 
   val = m.format([this.options.dateFormat, this.options.timeFormat].join(' '));
 
-  this.$el.val(val);
+  this.options.outputTo.val(val);
   this.$date.val(m.format(this.options.dateFormat));
   this.$time.val(m.format(this.options.timeFormat));
 };
