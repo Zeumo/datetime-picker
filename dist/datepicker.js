@@ -25,6 +25,7 @@
 
   this.pickerEvents = {
     'click .done': this.done,
+    'click .today': this.today,
     'change [name=date]': this.onChangeDate,
     'change [name=time]': this.onChangeTime
   };
@@ -48,9 +49,9 @@ Picker.prototype.onFocus = function(e) {
   this.$date.focus();
 };
 
-Picker.prototype.onChangeDate = function(e) {
+Picker.prototype.onChangeDate = function() {
   this.setDateTime({
-    date: e.currentTarget.value,
+    date: this.$date.val(),
     time: this.$time.val()
   });
 
@@ -62,6 +63,18 @@ Picker.prototype.onChangeTime = function(e) {
     date: this.$date.val(),
     time: e.currentTarget.value.toUpperCase()
   });
+};
+
+Picker.prototype.done = function(e) {
+  e.preventDefault();
+  this.close();
+};
+
+Picker.prototype.today = function(e) {
+  e.preventDefault();
+
+  this.$date.val(this.dateTime().date);
+  this.onChangeDate();
 };
 
 Picker.prototype.delegateEvents = function(events, $el) {
@@ -76,13 +89,20 @@ Picker.prototype.delegateEvents = function(events, $el) {
 };
 
 Picker.prototype.handlePickerClose = function() {
-  $(document).on('click', _.bind(function(e) {
-    var isInput  = e.target.tagName === 'INPUT',
+  var handler = function(e) {
+    var isInput    = e.target.tagName === 'INPUT',
         isDetached = !$(document).find(e.target).length,
-        isPicker = !!$(e.target).closest('#datepicker').length;
+        isPicker   = !!$(e.target).closest('#datepicker').length;
 
     if (isInput || isDetached || isPicker) return;
     this.close();
+  };
+
+  $(document).on('click', _.bind(handler, this));
+
+  $(document).on('keyup', _.bind(function(e) {
+    // Esc
+    if (e.which === 27) this.close();
   }, this));
 };
 
@@ -106,11 +126,6 @@ Picker.prototype.closeAll = function() {
 
 Picker.prototype.close = function() {
   this.$picker.detach();
-};
-
-Picker.prototype.done = function(e) {
-  e.preventDefault();
-  this.close();
 };
 
 Picker.prototype.dateTime = function(offsetHours) {
@@ -224,7 +239,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   if (helper = helpers.time) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.time); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "\" name=\"time\" id=\"time-picker\" class=\"form-control\">\n    </div>\n  </div>\n\n  <div class=\"calendar\"></div>\n\n  <a href=\"#\" class=\"btn btn-primary done\">Done</a>\n</div>\n";
+    + "\" name=\"time\" id=\"time-picker\" class=\"form-control\">\n    </div>\n  </div>\n\n  <div class=\"calendar\"></div>\n\n  <a href=\"#\" class=\"btn btn-primary pull-left done\">Done</a>\n  <a href=\"#\" class=\"btn btn-secondary pull-right today\">Today</a>\n</div>\n";
   return buffer;
   });
 

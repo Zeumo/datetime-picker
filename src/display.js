@@ -19,8 +19,3 @@ Picker.prototype.closeAll = function() {
 Picker.prototype.close = function() {
   this.$picker.detach();
 };
-
-Picker.prototype.done = function(e) {
-  e.preventDefault();
-  this.close();
-};

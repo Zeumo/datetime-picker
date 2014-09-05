@@ -14,6 +14,7 @@ Picker = function(el, options) {
 
   this.pickerEvents = {
     'click .done': this.done,
+    'click .today': this.today,
     'change [name=date]': this.onChangeDate,
     'change [name=time]': this.onChangeTime
   };
@@ -37,9 +38,9 @@ Picker.prototype.onFocus = function(e) {
   this.$date.focus();
 };
 
-Picker.prototype.onChangeDate = function(e) {
+Picker.prototype.onChangeDate = function() {
   this.setDateTime({
-    date: e.currentTarget.value,
+    date: this.$date.val(),
     time: this.$time.val()
   });
 
@@ -51,4 +52,16 @@ Picker.prototype.onChangeTime = function(e) {
     date: this.$date.val(),
     time: e.currentTarget.value.toUpperCase()
   });
+};
+
+Picker.prototype.done = function(e) {
+  e.preventDefault();
+  this.close();
+};
+
+Picker.prototype.today = function(e) {
+  e.preventDefault();
+
+  this.$date.val(this.dateTime().date);
+  this.onChangeDate();
 };
