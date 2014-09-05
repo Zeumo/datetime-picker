@@ -6,8 +6,8 @@
   padding: 10px;
   margin-top: 10px;
 
-  .calendar {
-    margin-top: 15px;
+  input {
+    margin-bottom: 15px;
   }
 
   .datepicker-inline {
@@ -22,7 +22,11 @@
 
 /* For example */
 
-.date-range-picker {
+#root {
   margin: 50px;
   text-align: center;
+}
+
+.example + .example {
+  margin-top: 50px;
 }
