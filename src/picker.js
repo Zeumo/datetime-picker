@@ -7,6 +7,7 @@ Picker = function(el, options) {
     timeFormat: 'h:mm A',
     template: JST.datepicker,
     doneText: 'Done',
+    prefill: true,
     outputTo: this.$el,
     onChange: _.noop
   }, options);
@@ -41,7 +42,9 @@ Picker = function(el, options) {
   }
 
   // Set current date and time
-  this.setDateTime(this.dateTime());
+  if (this.options.prefill) {
+    this.setDateTime(this.dateTime());
+  }
 
   // Delegate events
   this.delegateEvents(this.events, this.$el);
