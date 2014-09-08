@@ -12,6 +12,8 @@ Picker = function(el, options) {
     onChange: _.noop
   }, options);
 
+  this.options.onChange = _.bind(this.options.onChange, this);
+
   // Events
   this.events = {
     'click': this.onClick
