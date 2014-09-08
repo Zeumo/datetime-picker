@@ -62,19 +62,12 @@ Picker.prototype.onClick = function(e) {
 };
 
 Picker.prototype.onChangeDate = function() {
-  this.setDateTime({
-    date: this.$date.val(),
-    time: this.$time.val()
-  });
-
+  this.setDateTime(this.serialize());
   this.updateCalendar();
 };
 
 Picker.prototype.onChangeTime = function(e) {
-  this.setDateTime({
-    date: this.$date.val(),
-    time: e.currentTarget.value.toUpperCase()
-  });
+  this.setDateTime(this.serialize());
 };
 
 Picker.prototype.onDone = function(e) {

@@ -52,6 +52,13 @@ Picker.prototype.normalizeTime = function(time) {
   return time;
 };
 
+Picker.prototype.serialize = function() {
+  return {
+    date: this.$date.val(),
+    time: this.$time.val().toUpperCase()
+  };
+};
+
 Picker.prototype.hasPrecedingPicker = function() {
   var dtp = this.$el.siblings('input').data(pluginName);
   if (dtp) return true;
