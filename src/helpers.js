@@ -15,22 +15,27 @@ Picker.prototype.dateTime = function(offsetHours) {
 Picker.prototype.setDateTime = function(obj) {
   var date = obj.date,
       time = this.normalizeTime(obj.time),
-      m    = moment([date, time].join(' ')),
-      val, datetime;
+      datetime;
+
+  this.val = moment([date, time].join(' '));
 
   // Reset the moment object if we got an invalid date
-  if (!m.isValid()) {
+  if (!this.val.isValid()) {
     datetime = this.dateTime();
-    m = moment([datetime.date, datetime.time].join(' '));
+    this.val = moment([datetime.date, datetime.time].join(' '));
   }
 
-  val = m.format([this.options.dateFormat, this.options.timeFormat].join(' '));
+  formattedVal = this.formattedVal();
 
-  this.options.outputTo.val(val);
-  this.$date.val(m.format(this.options.dateFormat));
-  this.$time.val(m.format(this.options.timeFormat));
+  this.options.outputTo.val(formattedVal);
+  this.$date.val(this.val.format(this.options.dateFormat));
+  this.$time.val(this.val.format(this.options.timeFormat));
 
   this.options.onChange();
+};
+
+Picker.prototype.formattedVal = function() {
+  return this.val.format([this.options.dateFormat, this.options.timeFormat].join(' '));
 };
 
 Picker.prototype.normalizeTime = function(time) {
