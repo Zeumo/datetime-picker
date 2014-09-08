@@ -6,6 +6,7 @@ Picker = function(el, options) {
     dateFormat: 'MM/DD/YYYY',
     timeFormat: 'h:mm A',
     template: JST.datepicker,
+    doneText: 'Done',
     outputTo: this.$el,
     onChange: _.noop
   }, options);
