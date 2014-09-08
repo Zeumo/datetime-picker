@@ -80,6 +80,7 @@ Picker.prototype.onChangeTime = function(e) {
 Picker.prototype.onDone = function(e) {
   e.preventDefault();
   this.close();
+  this.onChangeDate();
 };
 
 Picker.prototype.onToday = function(e) {
