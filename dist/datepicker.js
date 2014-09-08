@@ -17,9 +17,13 @@
     dateFormat: 'MM/DD/YYYY',
     timeFormat: 'h:mm A',
     template: JST.datepicker,
+    doneText: 'Done',
+    prefill: true,
     outputTo: this.$el,
     onChange: _.noop
   }, options);
+
+  this.options.onChange = _.bind(this.options.onChange, this);
 
   // Events
   this.events = {
@@ -41,7 +45,9 @@
 
   // Convenience vars
   this.$body   = $('body');
-  this.$picker = $(this.options.template(this.dateTime()));
+  this.$picker = $(this.options.template(
+    _.extend(this.dateTime(), this.options)
+  ));
   this.$date   = this.$picker.find('[name=date]');
   this.$time   = this.$picker.find('[name=time]');
 
@@ -51,7 +57,9 @@
   }
 
   // Set current date and time
-  this.setDateTime(this.dateTime());
+  if (this.options.prefill) {
+    this.setDateTime(this.dateTime());
+  }
 
   // Delegate events
   this.delegateEvents(this.events, this.$el);
@@ -72,24 +80,18 @@ Picker.prototype.onClick = function(e) {
 };
 
 Picker.prototype.onChangeDate = function() {
-  this.setDateTime({
-    date: this.$date.val(),
-    time: this.$time.val()
-  });
-
+  this.setDateTime(this.serialize());
   this.updateCalendar();
 };
 
 Picker.prototype.onChangeTime = function(e) {
-  this.setDateTime({
-    date: this.$date.val(),
-    time: e.currentTarget.value.toUpperCase()
-  });
+  this.setDateTime(this.serialize());
 };
 
 Picker.prototype.onDone = function(e) {
   e.preventDefault();
   this.close();
+  this.onChangeDate();
 };
 
 Picker.prototype.onToday = function(e) {
@@ -131,7 +133,7 @@ Picker.prototype.handlePickerClose = function() {
 };
 
 Picker.prototype.show = function() {
-  var elBottom = this.$el.height() + this.$el.offset().top,
+  var elBottom = this.$el.outerHeight(true) + this.$el.offset().top,
       elLeft   = this.$el.offset().left;
 
   this.$picker.css({
@@ -169,22 +171,27 @@ Picker.prototype.dateTime = function(offsetHours) {
 Picker.prototype.setDateTime = function(obj) {
   var date = obj.date,
       time = this.normalizeTime(obj.time),
-      m    = moment([date, time].join(' ')),
-      val, datetime;
+      datetime;
+
+  this.val = moment([date, time].join(' '));
 
   // Reset the moment object if we got an invalid date
-  if (!m.isValid()) {
+  if (!this.val.isValid()) {
     datetime = this.dateTime();
-    m = moment([datetime.date, datetime.time].join(' '));
+    this.val = moment([datetime.date, datetime.time].join(' '));
   }
 
-  val = m.format([this.options.dateFormat, this.options.timeFormat].join(' '));
+  formattedVal = this.formattedVal();
 
-  this.options.outputTo.val(val);
-  this.$date.val(m.format(this.options.dateFormat));
-  this.$time.val(m.format(this.options.timeFormat));
+  this.options.outputTo.val(formattedVal);
+  this.$date.val(this.val.format(this.options.dateFormat));
+  this.$time.val(this.val.format(this.options.timeFormat));
 
   this.options.onChange();
+};
+
+Picker.prototype.formattedVal = function() {
+  return this.val.format([this.options.dateFormat, this.options.timeFormat].join(' '));
 };
 
 Picker.prototype.normalizeTime = function(time) {
@@ -204,6 +211,13 @@ Picker.prototype.normalizeTime = function(time) {
   }
 
   return time;
+};
+
+Picker.prototype.serialize = function() {
+  return {
+    date: this.$date.val(),
+    time: this.$time.val().toUpperCase()
+  };
 };
 
 Picker.prototype.hasPrecedingPicker = function() {
@@ -265,7 +279,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   if (helper = helpers.time) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.time); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "\" name=\"time\" id=\"time-picker\" class=\"form-control\">\n    </div>\n  </div>\n\n  <div class=\"calendar\"></div>\n\n  <a href=\"#\" class=\"btn btn-primary pull-right done\">Done</a>\n  <a href=\"#\" class=\"btn btn-secondary pull-left today\">Today</a>\n</div>\n";
+    + "\" name=\"time\" id=\"time-picker\" class=\"form-control\">\n    </div>\n  </div>\n\n  <div class=\"calendar\"></div>\n\n  <a href=\"#\" class=\"btn btn-primary pull-right done\">";
+  if (helper = helpers.doneText) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.doneText); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "</a>\n  <a href=\"#\" class=\"btn btn-secondary pull-left today\">Today</a>\n</div>\n";
   return buffer;
   });
 
