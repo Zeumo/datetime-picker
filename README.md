@@ -20,6 +20,10 @@ new Picker(document.getElementByTagName('input'))
 
 Default: `'MM/DD/YYYY'`
 
+**doneText**
+
+Default: `'Done'`
+
 **timeFormat**
 
 Default: `'h:mm A'`
@@ -32,9 +36,13 @@ Default: `JST.datepicker`
 
 Default: `this.$el`
 
+**prefill**
+
+Default: `true`
+
 **onChange**
 
-Default: `_.noop`
+Default: `_.noop` bound to `this` (picker instance)
 
 ## Dependencies
 
