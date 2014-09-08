@@ -34,7 +34,9 @@ Picker = function(el, options) {
 
   // Convenience vars
   this.$body   = $('body');
-  this.$picker = $(this.options.template(this.dateTime()));
+  this.$picker = $(this.options.template(
+    _.extend(this.dateTime(), this.options)
+  ));
   this.$date   = this.$picker.find('[name=date]');
   this.$time   = this.$picker.find('[name=time]');
 
