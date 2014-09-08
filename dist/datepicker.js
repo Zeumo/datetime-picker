@@ -52,12 +52,23 @@
   this.$time   = this.$picker.find('[name=time]');
 
   // Standardize outputTo
+  if (!this.options.outputTo) {
+    this.options.outputTo = this.$el;
+  }
   if (!this.options.outputTo.jquery) {
     this.options.outputTo = $(this.options.outputTo);
   }
 
   // Set current date and time
-  if (this.options.prefill) {
+  var m = moment(this.options.outputTo.val());
+  if (m.isValid()) {
+    this.setDateTime({
+      date: m.format(this.options.dateFormat),
+      time: m.format(this.options.timeFormat)
+    });
+  }
+
+  if (this.options.prefill && !m.isValid()) {
     this.setDateTime(this.dateTime());
   }
 
