@@ -1,5 +1,5 @@
 Picker.prototype.show = function() {
-  var elBottom = this.$el.height() + this.$el.offset().top,
+  var elBottom = this.$el.outerHeight(true) + this.$el.offset().top,
       elLeft   = this.$el.offset().left;
 
   this.$picker.css({
