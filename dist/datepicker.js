@@ -258,11 +258,7 @@ Picker.prototype.onCalendarChangeDate = function(e) {
 
   if (date) {
     this.$date.val(date);
-
-    this.setDateTime({
-      date: date,
-      time: this.$time.val()
-    });
+    this.setDateTime(this.serialize());
   }
 };
 
