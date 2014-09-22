@@ -19,7 +19,7 @@ Picker = function(el, options) {
     'click': this.onClick
   };
 
-  if (this.$el[0].tagName === 'INPUT') {
+  if (this.isInput()) {
     this.events = {
       'focus': this.onClick
     };

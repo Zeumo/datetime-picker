@@ -1,5 +1,5 @@
 /*
- *  datepicker.js 0.0.0
+ *  datepicker.js 0.1.0
  *  https://github.com/Zeumo/datepicker.js
  *
  *  /!\ Don't edit this file directly!
@@ -30,7 +30,7 @@
     'click': this.onClick
   };
 
-  if (this.$el[0].tagName === 'INPUT') {
+  if (this.isInput()) {
     this.events = {
       'focus': this.onClick
     };
@@ -198,6 +198,10 @@ Picker.prototype.setDateTime = function(obj) {
   this.$date.val(this.val.format(this.options.dateFormat));
   this.$time.val(this.val.format(this.options.timeFormat));
 
+  if (this.isInput()) {
+    this.$el.trigger('change');
+  }
+
   this.options.onChange();
 };
 
@@ -222,6 +226,10 @@ Picker.prototype.normalizeTime = function(time) {
   }
 
   return time;
+};
+
+Picker.prototype.isInput = function() {
+  return this.$el[0].tagName === 'INPUT';
 };
 
 Picker.prototype.serialize = function() {

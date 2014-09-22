@@ -31,6 +31,10 @@ Picker.prototype.setDateTime = function(obj) {
   this.$date.val(this.val.format(this.options.dateFormat));
   this.$time.val(this.val.format(this.options.timeFormat));
 
+  if (this.isInput()) {
+    this.$el.trigger('change');
+  }
+
   this.options.onChange();
 };
 
@@ -55,6 +59,10 @@ Picker.prototype.normalizeTime = function(time) {
   }
 
   return time;
+};
+
+Picker.prototype.isInput = function() {
+  return this.$el[0].tagName === 'INPUT';
 };
 
 Picker.prototype.serialize = function() {
