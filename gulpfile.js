@@ -11,7 +11,7 @@ var _        = require('lodash'),
 gulp.task('default', ['build', 'sass', 'watch', 'server']);
 
 gulp.task('watch', function() {
-  gulp.watch('src/*', ['build']);
+  gulp.watch(['src/*', 'package.json'], ['build']);
   gulp.watch('example/*.scss', ['sass']);
 });
 
