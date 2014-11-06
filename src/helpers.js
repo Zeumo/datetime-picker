@@ -25,11 +25,13 @@ Picker.prototype.setDateTime = function(obj) {
     this.val = moment([datetime.date, datetime.time].join(' '));
   }
 
-  formattedVal = this.formattedVal();
-
-  this.options.outputTo.val(formattedVal);
   this.$date.val(this.val.format(this.options.dateFormat));
   this.$time.val(this.val.format(this.options.timeFormat));
+};
+
+Picker.prototype.outputDateTime = function() {
+  formattedVal = this.formattedVal();
+  this.options.outputTo.val(formattedVal);
 
   if (this.isInput()) {
     this.$el.trigger('change');

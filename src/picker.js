@@ -80,6 +80,7 @@ Picker.prototype.onClick = function(e) {
 
 Picker.prototype.onChangeDate = function() {
   this.setDateTime(this.serialize());
+  this.outputDateTime();
   this.updateCalendar();
 };
 
