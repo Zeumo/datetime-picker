@@ -38,6 +38,11 @@ Picker.prototype.setDateTime = function(obj) {
   this.options.onChange();
 };
 
+Picker.prototype.unsetDateTime = function(obj) {
+  this.$el.trigger('datepicker.remove', this.options.outputTo);
+  this.options.onRemove();
+};
+
 Picker.prototype.formattedVal = function() {
   return this.val.format([this.options.dateFormat, this.options.timeFormat].join(' '));
 };

@@ -2,6 +2,8 @@ Picker.prototype.show = function() {
   var elBottom = this.$el.outerHeight(true) + this.$el.offset().top,
       elLeft   = this.$el.offset().left;
 
+  this.$picker.find('.remove').toggleClass('hidden', !this.savedVal);
+
   this.$picker.css({
     top: elBottom + 5 + 'px',
     left: elLeft + 'px',

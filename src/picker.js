@@ -6,13 +6,16 @@ Picker = function(el, options) {
     dateFormat: 'MM/DD/YYYY',
     timeFormat: 'h:mm A',
     template: JST.datepicker,
-    doneText: 'Done',
+    doneText: 'Save',
+    removeText: 'Remove',
     prefill: true,
     outputTo: this.$el,
-    onChange: _.noop
+    onChange: _.noop,
+    onRemove: _.noop
   }, options);
 
   this.options.onChange = _.bind(this.options.onChange, this);
+  this.options.onRemove = _.bind(this.options.onRemove, this);
 
   // Events
   this.events = {
@@ -27,9 +30,7 @@ Picker = function(el, options) {
 
   this.pickerEvents = {
     'click .done': this.onDone,
-    'click .today': this.onToday,
-    'change [name=date]': this.onChangeDate,
-    'change [name=time]': this.onChangeTime
+    'click .remove': this.onRemove
   };
 
   // Convenience vars
@@ -90,13 +91,14 @@ Picker.prototype.onChangeTime = function(e) {
 
 Picker.prototype.onDone = function(e) {
   e.preventDefault();
+  this.savedVal = this.val;
   this.close();
   this.onChangeDate();
 };
 
-Picker.prototype.onToday = function(e) {
+Picker.prototype.onRemove = function(e) {
   e.preventDefault();
-
-  this.$date.val(this.dateTime().date);
-  this.onChangeDate();
+  delete this.savedVal;
+  this.close();
+  this.unsetDateTime();
 };
