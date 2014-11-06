@@ -6,4 +6,12 @@ $(function() {
   });
 
   $('.prefill-picker input').picker();
+
+  $('.button-picker a').on('datepicker.remove', function(e, el) {
+    $(el).val('');
+  });
+
+  $('input').on('datepicker.remove', function(e) {
+    $(this).val('');
+  });
 });
