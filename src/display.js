@@ -14,6 +14,15 @@ Picker.prototype.show = function() {
   this.$body.append(this.$picker);
 };
 
+Picker.prototype.render = function() {
+  return $(this.options.template(
+    _.extend({},
+      this.dateTime(),
+      { val: this.val },
+      this.options)
+  ));
+};
+
 Picker.prototype.closeAll = function() {
   $('#datepicker').detach();
 };
