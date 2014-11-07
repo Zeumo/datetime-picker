@@ -8,7 +8,7 @@ Picker = function(el, options) {
     template: JST.datepicker,
     doneText: 'Save',
     removeText: 'Remove',
-    prefill: true,
+    prefill: false,
     outputTo: this.$el,
     onChange: _.noop,
     onRemove: _.noop,
@@ -60,6 +60,7 @@ Picker = function(el, options) {
 
   if (this.options.prefill && !m.isValid()) {
     this.setDateTime(this.dateTime());
+    this.outputDateTime();
   }
 
   // Delegate events
