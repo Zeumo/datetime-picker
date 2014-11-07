@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.0
+
+* Change `formattedVal` to output current state, rather than internal state
+
 ## 0.2.1
 
 * Fix prefill option
