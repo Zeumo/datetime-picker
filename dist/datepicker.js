@@ -217,8 +217,8 @@ Picker.prototype.setDateTime = function(obj) {
 };
 
 Picker.prototype.outputDateTime = function() {
-  formattedVal  = this.formattedVal();
   this.savedVal = this._val;
+  formattedVal  = this.formattedVal();
 
   this.options.outputTo.val(formattedVal);
 
