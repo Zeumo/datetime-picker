@@ -48,7 +48,8 @@ Picker.prototype.unsetDateTime = function(obj) {
 };
 
 Picker.prototype.formattedVal = function() {
-  return this.val.format([this.options.dateFormat, this.options.timeFormat].join(' '));
+  if (!this.savedVal) return;
+  return this.savedVal.format([this.options.dateFormat, this.options.timeFormat].join(' '));
 };
 
 Picker.prototype.normalizeTime = function(time) {
