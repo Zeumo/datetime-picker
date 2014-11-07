@@ -1,9 +1,16 @@
 $(function() {
-  $('.date-range-picker input').picker();
+  $('.date-range-picker input').picker({
+    onInitialize: function() {
+      console.log(this.formattedVal());
+    }
+  });
 
   $('.button-picker a').picker({
     outputTo: $('.button-picker input'),
-    prefill: true
+    prefill: true,
+    onInitialize: function() {
+      console.log(this.formattedVal());
+    }
   });
 
   $('.prefilled-picker input').picker();
