@@ -30,7 +30,9 @@ Picker.prototype.setDateTime = function(obj) {
 };
 
 Picker.prototype.outputDateTime = function() {
-  formattedVal = this.formattedVal();
+  formattedVal  = this.formattedVal();
+  this.savedVal = this.val;
+
   this.options.outputTo.val(formattedVal);
 
   if (this.isInput()) {

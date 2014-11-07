@@ -56,6 +56,7 @@ Picker = function(el, options) {
       date: m.format(this.options.dateFormat),
       time: m.format(this.options.timeFormat)
     });
+    this.outputDateTime();
   }
 
   if (this.options.prefill && !m.isValid()) {
@@ -96,7 +97,6 @@ Picker.prototype.onChangeTime = function(e) {
 
 Picker.prototype.onDone = function(e) {
   e.preventDefault();
-  this.savedVal = this.val;
   this.close();
   this.onChangeDate();
 };
