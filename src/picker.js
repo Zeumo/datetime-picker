@@ -51,6 +51,8 @@ Picker = function(el, options) {
 
   // Set current date and time
   var m = moment(this.options.outputTo.val());
+  this.setDateTime(this.dateTime());
+
   if (m.isValid()) {
     this.setDateTime({
       date: m.format(this.options.dateFormat),
@@ -59,8 +61,8 @@ Picker = function(el, options) {
     this.outputDateTime();
   }
 
+  // Prefill empty field
   if (this.options.prefill && !m.isValid()) {
-    this.setDateTime(this.dateTime());
     this.outputDateTime();
   }
 
