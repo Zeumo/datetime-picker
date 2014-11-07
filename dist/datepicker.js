@@ -19,14 +19,16 @@
     template: JST.datepicker,
     doneText: 'Save',
     removeText: 'Remove',
-    prefill: true,
+    prefill: false,
     outputTo: this.$el,
     onChange: _.noop,
-    onRemove: _.noop
+    onRemove: _.noop,
+    onInitialize: _.noop
   }, options);
 
   this.options.onChange = _.bind(this.options.onChange, this);
   this.options.onRemove = _.bind(this.options.onRemove, this);
+  this.options.onInitialize = _.bind(this.options.onInitialize, this);
 
   // Events
   this.events = {
@@ -65,10 +67,12 @@
       date: m.format(this.options.dateFormat),
       time: m.format(this.options.timeFormat)
     });
+    this.outputDateTime();
   }
 
   if (this.options.prefill && !m.isValid()) {
     this.setDateTime(this.dateTime());
+    this.outputDateTime();
   }
 
   // Delegate events
@@ -78,6 +82,9 @@
 
   // Initialize calendar picker
   this.initializeCalendar();
+
+  this.options.onInitialize(this);
+  this.$el.trigger('initialize', this);
 
   return this;
 };
@@ -101,7 +108,6 @@ Picker.prototype.onChangeTime = function(e) {
 
 Picker.prototype.onDone = function(e) {
   e.preventDefault();
-  this.savedVal = this.val;
   this.close();
   this.onChangeDate();
 };
@@ -209,7 +215,9 @@ Picker.prototype.setDateTime = function(obj) {
 };
 
 Picker.prototype.outputDateTime = function() {
-  formattedVal = this.formattedVal();
+  formattedVal  = this.formattedVal();
+  this.savedVal = this.val;
+
   this.options.outputTo.val(formattedVal);
 
   if (this.isInput()) {
