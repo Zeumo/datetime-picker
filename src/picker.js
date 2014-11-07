@@ -15,8 +15,8 @@ Picker = function(el, options) {
     onInitialize: _.noop
   }, options);
 
-  this.options.onChange = _.bind(this.options.onChange, this);
-  this.options.onRemove = _.bind(this.options.onRemove, this);
+  this.options.onChange     = _.bind(this.options.onChange, this);
+  this.options.onRemove     = _.bind(this.options.onRemove, this);
   this.options.onInitialize = _.bind(this.options.onInitialize, this);
 
   // Events
