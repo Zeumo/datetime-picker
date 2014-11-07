@@ -17,21 +17,21 @@ Picker.prototype.setDateTime = function(obj) {
       time = this.normalizeTime(obj.time),
       datetime;
 
-  this.val = moment([date, time].join(' '));
+  this._val = moment([date, time].join(' '));
 
   // Reset the moment object if we got an invalid date
-  if (!this.val.isValid()) {
+  if (!this._val.isValid()) {
     datetime = this.dateTime();
-    this.val = moment([datetime.date, datetime.time].join(' '));
+    this._val = moment([datetime.date, datetime.time].join(' '));
   }
 
-  this.$date.val(this.val.format(this.options.dateFormat));
-  this.$time.val(this.val.format(this.options.timeFormat));
+  this.$date.val(this._val.format(this.options.dateFormat));
+  this.$time.val(this._val.format(this.options.timeFormat));
 };
 
 Picker.prototype.outputDateTime = function() {
   formattedVal  = this.formattedVal();
-  this.savedVal = this.val;
+  this.savedVal = this._val;
 
   this.options.outputTo.val(formattedVal);
 

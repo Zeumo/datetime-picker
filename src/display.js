@@ -18,7 +18,7 @@ Picker.prototype.render = function() {
   return $(this.options.template(
     _.extend({},
       this.dateTime(),
-      { val: this.val },
+      { val: this._val },
       this.options)
   ));
 };
