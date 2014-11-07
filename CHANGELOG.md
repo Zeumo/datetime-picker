@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1
+
+* Fix prefill option
+* Fix state when using prefilled input
+* Add onInitialize callback, event
+
 ## 0.2.0
 
 * Add 'Remove' functionality
