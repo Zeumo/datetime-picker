@@ -74,8 +74,8 @@ Picker = function(el, options) {
   // Initialize calendar picker
   this.initializeCalendar();
 
-  this.options.onInitialize(this);
-  this.$el.trigger('initialize', this);
+  this.options.onInitialize();
+  this.$el.trigger('initialize');
 
   return this;
 };
