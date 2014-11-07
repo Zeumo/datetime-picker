@@ -26,8 +26,8 @@
     onInitialize: _.noop
   }, options);
 
-  this.options.onChange = _.bind(this.options.onChange, this);
-  this.options.onRemove = _.bind(this.options.onRemove, this);
+  this.options.onChange     = _.bind(this.options.onChange, this);
+  this.options.onRemove     = _.bind(this.options.onRemove, this);
   this.options.onInitialize = _.bind(this.options.onInitialize, this);
 
   // Events
@@ -62,6 +62,8 @@
 
   // Set current date and time
   var m = moment(this.options.outputTo.val());
+  this.setDateTime(this.dateTime());
+
   if (m.isValid()) {
     this.setDateTime({
       date: m.format(this.options.dateFormat),
@@ -70,8 +72,8 @@
     this.outputDateTime();
   }
 
+  // Prefill empty field
   if (this.options.prefill && !m.isValid()) {
-    this.setDateTime(this.dateTime());
     this.outputDateTime();
   }
 
@@ -83,8 +85,8 @@
   // Initialize calendar picker
   this.initializeCalendar();
 
-  this.options.onInitialize(this);
-  this.$el.trigger('initialize', this);
+  this.options.onInitialize();
+  this.$el.trigger('initialize');
 
   return this;
 };
