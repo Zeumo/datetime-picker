@@ -1,5 +1,5 @@
 /*
- *  datepicker.js 0.3.0
+ *  datepicker.js 0.3.1
  *  https://github.com/Zeumo/datepicker.js
  *
  *  /!\ Don't edit this file directly!
@@ -230,6 +230,7 @@ Picker.prototype.outputDateTime = function() {
 };
 
 Picker.prototype.unsetDateTime = function(obj) {
+  this.options.outputTo.val('');
   this.$el.trigger('datepicker.remove', this.options.outputTo);
   this.options.onRemove();
 };

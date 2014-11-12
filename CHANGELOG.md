@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1
+
+* Remove outputTo value on remoev
+
 ## 0.3.0
 
 * Change `formattedVal` to output current state, rather than internal state
