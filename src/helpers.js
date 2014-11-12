@@ -43,6 +43,7 @@ Picker.prototype.outputDateTime = function() {
 };
 
 Picker.prototype.unsetDateTime = function(obj) {
+  this.options.outputTo.val('');
   this.$el.trigger('datepicker.remove', this.options.outputTo);
   this.options.onRemove();
 };
