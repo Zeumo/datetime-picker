@@ -43,6 +43,7 @@ gulp.task('build', ['templates'], function() {
     'src/helpers.js',
     'src/calendar.js',
     'src/plugin.js',
+    'src/bind.js',
     '.tmp/templates.js'
   ])
   .pipe(concat('datepicker.js'))

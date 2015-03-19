@@ -2,7 +2,7 @@ Picker = function(el, options) {
   this.$el   = $(el);
 
   // Options
-  this.options = _.extend({
+  this.options = $.extend({
     dateFormat: 'MM/DD/YYYY',
     timeFormat: 'h:mm A',
     template: JST.datepicker,
@@ -10,14 +10,14 @@ Picker = function(el, options) {
     removeText: 'Remove',
     prefill: false,
     outputTo: this.$el,
-    onChange: _.noop,
-    onRemove: _.noop,
-    onInitialize: _.noop
+    onChange: function() {},
+    onRemove: function() {},
+    onInitialize: function() {}
   }, options);
 
-  this.options.onChange     = _.bind(this.options.onChange, this);
-  this.options.onRemove     = _.bind(this.options.onRemove, this);
-  this.options.onInitialize = _.bind(this.options.onInitialize, this);
+  this.options.onChange     = this.options.onChange.bind(this);
+  this.options.onRemove     = this.options.onRemove.bind(this);
+  this.options.onInitialize = this.options.onInitialize.bind(this);
 
   // Events
   this.events = {

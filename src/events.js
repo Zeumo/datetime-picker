@@ -3,9 +3,8 @@ Picker.prototype.delegateEvents = function(events, $el) {
     var match     = key.match(/^(\S+)\s*(.*)$/);
     var eventName = match[1];
     var handler   = match[2];
-    method        = _.bind(method, this);
 
-    $el.on(eventName, handler, method);
+    $el.on(eventName, handler, method.bind(this));
   }, this);
 };
 
@@ -21,10 +20,10 @@ Picker.prototype.handlePickerClose = function() {
     this.close();
   };
 
-  $(document).on('click', _.bind(handler, this));
+  $(document).on('click', handler.bind(this));
 
-  $(document).on('keyup', _.bind(function(e) {
+  $(document).on('keyup', function(e) {
     // Esc
     if (e.which === 27) this.close();
-  }, this));
+  }.bind(this));
 };
