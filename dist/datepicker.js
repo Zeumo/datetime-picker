@@ -13,7 +13,7 @@
   this.$el   = $(el);
 
   // Options
-  this.options = _.extend({
+  this.options = $.extend({
     dateFormat: 'MM/DD/YYYY',
     timeFormat: 'h:mm A',
     template: JST.datepicker,
@@ -21,14 +21,14 @@
     removeText: 'Remove',
     prefill: false,
     outputTo: this.$el,
-    onChange: _.noop,
-    onRemove: _.noop,
-    onInitialize: _.noop
+    onChange: function() {},
+    onRemove: function() {},
+    onInitialize: function() {}
   }, options);
 
-  this.options.onChange     = _.bind(this.options.onChange, this);
-  this.options.onRemove     = _.bind(this.options.onRemove, this);
-  this.options.onInitialize = _.bind(this.options.onInitialize, this);
+  this.options.onChange     = this.options.onChange.bind(this);
+  this.options.onRemove     = this.options.onRemove.bind(this);
+  this.options.onInitialize = this.options.onInitialize.bind(this);
 
   // Events
   this.events = {
@@ -126,9 +126,8 @@ Picker.prototype.delegateEvents = function(events, $el) {
     var match     = key.match(/^(\S+)\s*(.*)$/);
     var eventName = match[1];
     var handler   = match[2];
-    method        = _.bind(method, this);
 
-    $el.on(eventName, handler, method);
+    $el.on(eventName, handler, method.bind(this));
   }, this);
 };
 
@@ -144,12 +143,12 @@ Picker.prototype.handlePickerClose = function() {
     this.close();
   };
 
-  $(document).on('click', _.bind(handler, this));
+  $(document).on('click', handler.bind(this));
 
-  $(document).on('keyup', _.bind(function(e) {
+  $(document).on('keyup', function(e) {
     // Esc
     if (e.which === 27) this.close();
-  }, this));
+  }.bind(this));
 };
 
 Picker.prototype.show = function() {
@@ -170,7 +169,7 @@ Picker.prototype.show = function() {
 
 Picker.prototype.render = function() {
   return $(this.options.template(
-    _.extend({},
+    $.extend({},
       this.dateTime(),
       { val: this._val },
       this.options)
@@ -309,6 +308,31 @@ $.fn[pluginName] = function (options) {
   });
   return this;
 };
+
+if (!Function.prototype.bind) {
+  Function.prototype.bind = function(oThis) {
+    if (typeof this !== 'function') {
+      // closest thing possible to the ECMAScript 5
+      // internal IsCallable function
+      throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
+    }
+
+    var aArgs   = Array.prototype.slice.call(arguments, 1),
+        fToBind = this,
+        fNOP    = function() {},
+        fBound  = function() {
+          return fToBind.apply(this instanceof fNOP
+                 ? this
+                 : oThis,
+                 aArgs.concat(Array.prototype.slice.call(arguments)));
+        };
+
+    fNOP.prototype = this.prototype;
+    fBound.prototype = new fNOP();
+
+    return fBound;
+  };
+}
 
 this["JST"] = this["JST"] || {};
 this["JST"]["datepicker"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
