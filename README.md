@@ -47,7 +47,6 @@ Default: `_.noop` bound to `this` (picker instance)
 ## Dependencies
 
 * jQuery
-* lodash
 * handlebars
 * moment
 * bootstrap-datepicker
