@@ -42,12 +42,11 @@ Default: `true`
 
 **onChange**
 
-Default: `_.noop` bound to `this` (picker instance)
+Default: `noop` bound to `this` (picker instance)
 
 ## Dependencies
 
 * jQuery
-* handlebars
 * moment
 * bootstrap-datepicker
 
