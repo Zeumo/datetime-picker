@@ -1,5 +1,4 @@
 var _         = require('lodash'),
-  path        = require('path'),
   eventStream = require('event-stream'),
   pkg         = require('./package.json'),
   gulp        = require('gulp'),
