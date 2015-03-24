@@ -7,7 +7,12 @@
  */
 
 (function(window) {
-  var Picker, pluginName = 'picker';
+  var Picker, pluginName = 'picker', templates = {};
+
+  var t = function(s,d){
+    for(var p in d) s=s.replace(new RegExp('{'+p+'}','g'), d[p]);
+    return s;
+  };
 
   Picker = function(el, options) {
   this.$el   = $(el);
@@ -16,7 +21,7 @@
   this.options = $.extend({
     dateFormat: 'MM/DD/YYYY',
     timeFormat: 'h:mm A',
-    template: JST.datepicker,
+    template: templates.datepicker,
     doneText: 'Save',
     removeText: 'Remove',
     prefill: false,
@@ -168,12 +173,12 @@ Picker.prototype.show = function() {
 };
 
 Picker.prototype.render = function() {
-  return $(this.options.template(
-    $.extend({},
-      this.dateTime(),
-      { val: this._val },
-      this.options)
-  ));
+  var options = $.extend({},
+    this.dateTime(),
+    { val: this._val },
+    this.options);
+
+  return $(t(this.options.template, options));
 };
 
 Picker.prototype.closeAll = function() {
@@ -334,32 +339,7 @@ if (!Function.prototype.bind) {
   };
 }
 
-this["JST"] = this["JST"] || {};
-this["JST"]["datepicker"] = Handlebars.template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, helper, functionType="function", escapeExpression=this.escapeExpression;
-
-
-  buffer += "<div id=\"datepicker\">\n  <div class=\"row\">\n    <div class=\"col-xs-6\">\n      <label for=\"date-picker\">Date</label>\n      <input type=\"text\" value=\"";
-  if (helper = helpers.date) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0.date); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
-    + "\" name=\"date\" id=\"date-picker\" class=\"form-control\">\n    </div>\n    <div class=\"col-xs-6\">\n    <label for=\"time-picker\">Time</label>\n      <input type=\"text\" value=\"";
-  if (helper = helpers.time) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0.time); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
-    + "\" name=\"time\" id=\"time-picker\" class=\"form-control\">\n    </div>\n  </div>\n\n  <div class=\"calendar\"></div>\n\n  <a href=\"#\" class=\"btn btn-primary pull-left done\">";
-  if (helper = helpers.doneText) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0.doneText); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
-    + "</a>\n  <a href=\"#\" class=\"btn text-danger pull-right remove hidden\">";
-  if (helper = helpers.removeText) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0.removeText); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
-    + "</a>\n</div>\n";
-  return buffer;
-  });
+templates["datepicker"] = "<div id=\"datepicker\">  <div class=\"row\">    <div class=\"col-xs-6\">      <label for=\"date-picker\">Date</label>      <input type=\"text\" value=\"{date}\" name=\"date\" id=\"date-picker\" class=\"form-control\">    </div>    <div class=\"col-xs-6\">    <label for=\"time-picker\">Time</label>      <input type=\"text\" value=\"{time}\" name=\"time\" id=\"time-picker\" class=\"form-control\">    </div>  </div>  <div class=\"calendar\"></div>  <a href=\"#\" class=\"btn btn-primary pull-left done\">{doneText}</a>  <a href=\"#\" class=\"btn text-danger pull-right remove hidden\">{removeText}</a></div>"
 
   window.Picker = Picker;
 }(this));
