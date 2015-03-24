@@ -1,12 +1,28 @@
-var _        = require('lodash'),
-  pkg        = require('./package.json'),
-  gulp       = require('gulp'),
-  declare    = require('gulp-declare'),
-  concat     = require('gulp-concat'),
-  wrap       = require('gulp-wrap'),
-  sass       = require('gulp-sass'),
-  handlebars = require('gulp-handlebars'),
-  webserver  = require('gulp-webserver');
+var _         = require('lodash'),
+  path        = require('path'),
+  eventStream = require('event-stream'),
+  pkg         = require('./package.json'),
+  gulp        = require('gulp'),
+  concat      = require('gulp-concat'),
+  wrap        = require('gulp-wrap'),
+  sass        = require('gulp-sass'),
+  webserver   = require('gulp-webserver');
+
+var compileTemplate = function() {
+  var transform = function(file, cb) {
+    var name     = file.relative.replace(/\.html$/, '');
+    var contents = file.contents.toString()
+      .replace(/\"/g, '\\"')
+      .replace(/\n/g, '');
+
+    var content = 'templates["'+name+'"] = "'+contents+'";';
+
+    file.contents = new Buffer(String(content));
+    cb(null, file);
+  };
+
+  return eventStream.map(transform);
+};
 
 gulp.task('default', ['build', 'sass', 'watch', 'server']);
 
@@ -24,13 +40,8 @@ gulp.task('sass', function() {
 });
 
 gulp.task('templates', function(){
-  return gulp.src('src/*.hbs')
-    .pipe(handlebars())
-    .pipe(wrap('Handlebars.template(<%= contents %>)'))
-    .pipe(declare({
-      namespace: 'JST',
-      noRedeclare: true, // Avoid duplicate declarations
-    }))
+  return gulp.src('src/*.html')
+    .pipe(compileTemplate())
     .pipe(concat('templates.js'))
     .pipe(gulp.dest('.tmp'));
 });

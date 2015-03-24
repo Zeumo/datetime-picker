@@ -3,7 +3,7 @@
   "version": "0.3.1",
   "description": "A Trello-like datepicker with freeform time",
   "bugs": {
-    "url" : "https://github.com/Zeumo/datetime-picker/issues"
+    "url": "https://github.com/Zeumo/datetime-picker/issues"
   },
   "homepage": "https://github.com/Zeumo/datetime-picker",
   "main": "dist/datepicker.js",
@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "bootstrap": "^3.2.0",
+    "event-stream": "^3.3.0",
     "gulp": "^3.8.7",
     "gulp-concat": "^2.3.5",
     "gulp-declare": "^0.3.0",

@@ -15,12 +15,12 @@ Picker.prototype.show = function() {
 };
 
 Picker.prototype.render = function() {
-  return $(this.options.template(
-    $.extend({},
-      this.dateTime(),
-      { val: this._val },
-      this.options)
-  ));
+  var options = $.extend({},
+    this.dateTime(),
+    { val: this._val },
+    this.options);
+
+  return $(t(this.options.template, options));
 };
 
 Picker.prototype.closeAll = function() {

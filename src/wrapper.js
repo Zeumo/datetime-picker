@@ -7,7 +7,12 @@
  */
 
 (function(window) {
-  var Picker, pluginName = 'picker';
+  var Picker, pluginName = 'picker', templates = {};
+
+  var t = function(s,d){
+    for(var p in d) s=s.replace(new RegExp('{'+p+'}','g'), d[p]);
+    return s;
+  };
 
   <%= contents %>
 

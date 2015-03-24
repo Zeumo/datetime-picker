@@ -5,7 +5,7 @@ Picker = function(el, options) {
   this.options = $.extend({
     dateFormat: 'MM/DD/YYYY',
     timeFormat: 'h:mm A',
-    template: JST.datepicker,
+    template: templates.datepicker,
     doneText: 'Save',
     removeText: 'Remove',
     prefill: false,
