@@ -13,7 +13,6 @@
   "author": "Nic Aitch",
   "license": "MIT",
   "dependencies": {
-    "handlebars": "^1.3",
     "jquery": "^1.11.1",
     "moment": "^2.8.2"
   },
@@ -23,7 +22,6 @@
     "gulp": "^3.8.7",
     "gulp-concat": "^2.3.5",
     "gulp-declare": "^0.3.0",
-    "gulp-handlebars": "^2.2.0",
     "gulp-sass": "^0.7.3",
     "gulp-webserver": "^0.7.2",
     "gulp-wrap": "^0.3.0",
