@@ -1,5 +1,5 @@
 /*
- *  datepicker.js 0.3.1
+ *  datepicker.js 0.4.0
  *  https://github.com/Zeumo/datepicker.js
  *
  *  /!\ Don't edit this file directly!
@@ -16,6 +16,7 @@
 
   Picker = function(el, options) {
   this.$el   = $(el);
+  this._initialized = false;
 
   // Options
   this.options = $.extend({
@@ -93,6 +94,7 @@
   this.options.onInitialize();
   this.$el.trigger('initialize');
 
+  this._initialized = true;
   return this;
 };
 
@@ -226,11 +228,13 @@ Picker.prototype.outputDateTime = function() {
 
   this.options.outputTo.val(formattedVal);
 
-  if (this.isInput()) {
-    this.$el.trigger('change');
-  }
+  if (this._initialized) {
+    if (this.isInput()) {
+      this.$el.trigger('change');
+    }
 
-  this.options.onChange();
+    this.options.onChange();
+  }
 };
 
 Picker.prototype.unsetDateTime = function(obj) {
