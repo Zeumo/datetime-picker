@@ -35,11 +35,13 @@ Picker.prototype.outputDateTime = function() {
 
   this.options.outputTo.val(formattedVal);
 
-  if (this.isInput()) {
-    this.$el.trigger('change');
-  }
+  if (this._initialized) {
+    if (this.isInput()) {
+      this.$el.trigger('change');
+    }
 
-  this.options.onChange();
+    this.options.onChange();
+  }
 };
 
 Picker.prototype.unsetDateTime = function(obj) {

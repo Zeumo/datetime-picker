@@ -1,5 +1,6 @@
 Picker = function(el, options) {
   this.$el   = $(el);
+  this._initialized = false;
 
   // Options
   this.options = $.extend({
@@ -77,6 +78,7 @@ Picker = function(el, options) {
   this.options.onInitialize();
   this.$el.trigger('initialize');
 
+  this._initialized = true;
   return this;
 };
 
