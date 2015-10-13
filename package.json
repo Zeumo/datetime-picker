@@ -1,6 +1,6 @@
 {
   "name": "datetime-picker",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "A Trello-like datepicker with freeform time",
   "bugs": {
     "url": "https://github.com/Zeumo/datetime-picker/issues"
