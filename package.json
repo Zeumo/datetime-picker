@@ -22,7 +22,7 @@
     "gulp": "^3.8.7",
     "gulp-concat": "^2.3.5",
     "gulp-declare": "^0.3.0",
-    "gulp-sass": "^0.7.3",
+    "gulp-sass": "^2.0.4",
     "gulp-webserver": "^0.7.2",
     "gulp-wrap": "^0.3.0",
     "normalize.css": "^3.0.1"
