@@ -67,7 +67,7 @@
   }
 
   // Set current date and time
-  var m = moment(this.options.outputTo.val());
+  var m = moment(new Date(this.options.outputTo.val()));
   this.setDateTime(this.dateTime());
 
   if (m.isValid()) {
@@ -129,13 +129,14 @@ Picker.prototype.onRemove = function(e) {
 };
 
 Picker.prototype.delegateEvents = function(events, $el) {
-  _(events).each(function(method, key) {
+  for(var key in events) {
     var match     = key.match(/^(\S+)\s*(.*)$/);
     var eventName = match[1];
     var handler   = match[2];
+    var method    = events[key];
 
     $el.on(eventName, handler, method.bind(this));
-  }, this);
+  }
 };
 
 Picker.prototype.handlePickerClose = function() {
@@ -159,7 +160,8 @@ Picker.prototype.handlePickerClose = function() {
 };
 
 Picker.prototype.show = function() {
-  var elBottom = this.$el.outerHeight(true) + this.$el.offset().top,
+  var elHeight = this.$el.outerHeight(true);
+      elBottom = elHeight + this.$el.offset().top,
       elLeft   = this.$el.offset().left;
 
   this.$picker.find('.remove').toggleClass('hidden', !this.savedVal);
@@ -172,6 +174,16 @@ Picker.prototype.show = function() {
 
   this.closeAll();
   this.$body.append(this.$picker);
+
+  var pickerHeight = this.$picker.outerHeight(true);
+  var pickerBottom = pickerHeight + this.$picker.offset().top;
+
+  if (pickerBottom > window.innerHeight) {
+    this.$picker.css({
+      top: this.$el.offset().top - pickerHeight + 5 + 'px',
+      position: 'absolute'
+    });
+  }
 };
 
 Picker.prototype.render = function() {
@@ -210,7 +222,7 @@ Picker.prototype.setDateTime = function(obj) {
       time = this.normalizeTime(obj.time),
       datetime;
 
-  this._val = moment([date, time].join(' '));
+  this._val = moment(new Date([date, time].join(' ')));
 
   // Reset the moment object if we got an invalid date
   if (!this._val.isValid()) {
