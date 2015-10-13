@@ -1,5 +1,6 @@
 Picker.prototype.show = function() {
-  var elBottom = this.$el.outerHeight(true) + this.$el.offset().top,
+  var elHeight = this.$el.outerHeight(true);
+      elBottom = elHeight + this.$el.offset().top,
       elLeft   = this.$el.offset().left;
 
   this.$picker.find('.remove').toggleClass('hidden', !this.savedVal);
@@ -12,6 +13,16 @@ Picker.prototype.show = function() {
 
   this.closeAll();
   this.$body.append(this.$picker);
+
+  var pickerHeight = this.$picker.outerHeight(true);
+  var pickerBottom = pickerHeight + this.$picker.offset().top;
+
+  if (pickerBottom > window.innerHeight) {
+    this.$picker.css({
+      top: this.$el.offset().top - pickerHeight + 5 + 'px',
+      position: 'absolute'
+    });
+  }
 };
 
 Picker.prototype.render = function() {
