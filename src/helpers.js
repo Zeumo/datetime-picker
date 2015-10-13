@@ -17,7 +17,7 @@ Picker.prototype.setDateTime = function(obj) {
       time = this.normalizeTime(obj.time),
       datetime;
 
-  this._val = moment([date, time].join(' '));
+  this._val = moment(new Date([date, time].join(' ')));
 
   // Reset the moment object if we got an invalid date
   if (!this._val.isValid()) {

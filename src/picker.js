@@ -51,7 +51,7 @@ Picker = function(el, options) {
   }
 
   // Set current date and time
-  var m = moment(this.options.outputTo.val());
+  var m = moment(new Date(this.options.outputTo.val()));
   this.setDateTime(this.dateTime());
 
   if (m.isValid()) {
