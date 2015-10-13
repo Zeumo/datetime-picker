@@ -1,11 +1,12 @@
 Picker.prototype.delegateEvents = function(events, $el) {
-  _(events).each(function(method, key) {
+  for(var key in events) {
     var match     = key.match(/^(\S+)\s*(.*)$/);
     var eventName = match[1];
     var handler   = match[2];
+    var method    = events[key];
 
     $el.on(eventName, handler, method.bind(this));
-  }, this);
+  }
 };
 
 Picker.prototype.handlePickerClose = function() {
