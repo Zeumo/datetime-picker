@@ -16,6 +16,7 @@ Picker = function(el, options) {
     doneText: 'Save',
     removeText: 'Remove',
     prefill: false,
+    defaultTimeRange: { hours: 1 },
     outputTo: this.$el,
     onChange: function() {},
     onRemove: function() {},
