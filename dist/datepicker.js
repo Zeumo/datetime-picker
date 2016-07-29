@@ -39,6 +39,9 @@
     onInitialize: function() {}
   }, options);
 
+  this.$startPicker = this.options.startPicker;
+  this.$endPicker   = this.options.endPicker;
+
   this.options.onChange     = this.options.onChange.bind(this);
   this.options.onRemove     = this.options.onRemove.bind(this);
   this.options.onInitialize = this.options.onInitialize.bind(this);
