@@ -20,6 +20,12 @@ new Picker(document.getElementByTagName('input'))
 
 Default: `'MM/DD/YYYY'`
 
+**defaultTimeRange**
+
+Default: `{ hours: 1 }`
+
+* Only used with an input range
+
 **doneText**
 
 Default: `'Done'`
