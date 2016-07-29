@@ -50,6 +50,10 @@ Picker = function(el, options) {
     'change': this.setTimeAfterStartPicker
   }
 
+  this.endPickerEvents = {
+    'change': this.setTimeToBeforeEndPicker
+  }
+
   // Convenience vars
   this.$body   = $('body');
   this.$picker = $(this.render());
@@ -87,6 +91,8 @@ Picker = function(el, options) {
   this.handlePickerClose();
   if (this.isEndPicker()) {
     this.delegateEvents(this.startPickerEvents, this.$startPicker);
+  } else if (this.isStartPicker()) {
+    this.delegateEvents(this.endPickerEvents, this.$endPicker);
   }
 
   // Initialize calendar picker

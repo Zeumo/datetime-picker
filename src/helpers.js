@@ -94,6 +94,10 @@ Picker.prototype.isEndPicker = function() {
   return !!this.$startPicker;
 };
 
+Picker.prototype.isStartPicker = function() {
+  return !!this.$endPicker;
+};
+
 Picker.prototype.hasRange = function() {
   return !!this.range.length;
 }
@@ -119,6 +123,10 @@ Picker.prototype.startPickerDate = function() {
   return new Date(this.$startPicker.val());
 };
 
+Picker.prototype.endPickerDate = function() {
+  return new Date(this.$endPicker.val());
+};
+
 Picker.prototype.selectedMoment = function() {
   return moment(new Date(this.options.outputTo.val()));
 };
@@ -135,6 +143,24 @@ Picker.prototype.setTimeAfterStartPicker = function() {
     this.setDateTime({
       date: newEndTime.format(this.options.dateFormat),
       time: newEndTime.format(this.options.timeFormat)
+    });
+    this.outputDateTime();
+    this.updateCalendar();
+  }
+};
+
+Picker.prototype.setTimeToBeforeEndPicker = function() {
+  var endTime          = this.endPickerDate();
+  var newStartTime     = moment(endTime).subtract(this.options.defaultTimeRange);
+  var currentStartTime = this.selectedMoment()
+
+  // Don't update dateTime if the currentStartTime is already < than endTime
+  if (currentStartTime < endTime) return;
+
+  if (newStartTime.isValid()) {
+    this.setDateTime({
+      date: newStartTime.format(this.options.dateFormat),
+      time: newStartTime.format(this.options.timeFormat)
     });
     this.outputDateTime();
     this.updateCalendar();
