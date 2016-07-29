@@ -1,7 +1,7 @@
 Picker.prototype.dateTime = function(offsetHours) {
   offsetHours = offsetHours || 1;
 
-  if (this.hasPrecedingPicker()) {
+  if (this.hasPrecedingPicker() || this.isEndPicker()) {
     offsetHours += 1;
   }
 
@@ -90,6 +90,10 @@ Picker.prototype.hasPrecedingPicker = function() {
   if (dtp) return true;
 };
 
+Picker.prototype.isEndPicker = function() {
+  return !!this.$startPicker;
+};
+
 Picker.prototype.hasRange = function() {
   return !!this.range.length;
 }
@@ -109,4 +113,30 @@ Picker.prototype.initializeRange = function(options) {
     }
     return new Picker(this, rangeOptions);
   });
+};
+
+Picker.prototype.startPickerDate = function() {
+  return new Date(this.$startPicker.val());
+};
+
+Picker.prototype.selectedMoment = function() {
+  return moment(new Date(this.options.outputTo.val()));
+};
+
+Picker.prototype.setTimeAfterStartPicker = function() {
+  var startTime      = this.startPickerDate();
+  var newEndTime     = moment(startTime).add(this.options.defaultTimeRange);
+  var currentEndTime = this.selectedMoment()
+
+  // Don't update dateTime if the currentEndTime is already > than startTime
+  if (currentEndTime > startTime) return;
+
+  if (newEndTime.isValid()) {
+    this.setDateTime({
+      date: newEndTime.format(this.options.dateFormat),
+      time: newEndTime.format(this.options.timeFormat)
+    });
+    this.outputDateTime();
+    this.updateCalendar();
+  }
 };

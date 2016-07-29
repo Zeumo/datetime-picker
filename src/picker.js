@@ -46,6 +46,10 @@ Picker = function(el, options) {
     'click .remove': this.onRemove
   };
 
+  this.startPickerEvents = {
+    'change': this.setTimeAfterStartPicker
+  }
+
   // Convenience vars
   this.$body   = $('body');
   this.$picker = $(this.render());
@@ -81,6 +85,9 @@ Picker = function(el, options) {
   this.delegateEvents(this.events, this.$el);
   this.delegateEvents(this.pickerEvents, this.$picker);
   this.handlePickerClose();
+  if (this.isEndPicker()) {
+    this.delegateEvents(this.startPickerEvents, this.$startPicker);
+  }
 
   // Initialize calendar picker
   this.initializeCalendar();
