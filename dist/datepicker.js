@@ -1,5 +1,5 @@
 /*
- *  datepicker.js 0.6.0
+ *  datepicker.js 0.7.0
  *  https://github.com/Zeumo/datepicker.js
  *
  *  /!\ Don't edit this file directly!
