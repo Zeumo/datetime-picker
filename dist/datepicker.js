@@ -15,8 +15,14 @@
   };
 
   Picker = function(el, options) {
-  this.$el   = $(el);
+  this.$el          = $(el);
   this._initialized = false;
+  this.range        = this.initializeRange(options);
+
+  if (this.hasRange()) {
+    this._initialized = true;
+    return this;
+  }
 
   // Options
   this.options = $.extend({
@@ -293,6 +299,27 @@ Picker.prototype.serialize = function() {
 Picker.prototype.hasPrecedingPicker = function() {
   var dtp = this.$el.siblings('input').data(pluginName);
   if (dtp) return true;
+};
+
+Picker.prototype.hasRange = function() {
+  return !!this.range.length;
+}
+
+Picker.prototype.initializeRange = function(options) {
+  var children = this.$el.find('input');
+
+  if (children.length !== 2) return [];
+
+  return children.map(function(index) {
+    var rangeOptions;
+
+    if (index === 1) {
+      rangeOptions = $.extend({ startPicker: $(children[0]) }, options);
+    } else {
+      rangeOptions = $.extend({ endPicker: $(children[1]) }, options);
+    }
+    return new Picker(this, rangeOptions);
+  });
 };
 
 Picker.prototype.initializeCalendar = function() {

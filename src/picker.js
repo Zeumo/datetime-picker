@@ -1,6 +1,12 @@
 Picker = function(el, options) {
-  this.$el   = $(el);
+  this.$el          = $(el);
   this._initialized = false;
+  this.range        = this.initializeRange(options);
+
+  if (this.hasRange()) {
+    this._initialized = true;
+    return this;
+  }
 
   // Options
   this.options = $.extend({
