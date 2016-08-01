@@ -1,6 +1,12 @@
 Picker = function(el, options) {
-  this.$el   = $(el);
+  this.$el          = $(el);
   this._initialized = false;
+  this.range        = this.initializeRange(options);
+
+  if (this.hasRange()) {
+    this._initialized = true;
+    return this;
+  }
 
   // Options
   this.options = $.extend({
@@ -10,11 +16,15 @@ Picker = function(el, options) {
     doneText: 'Save',
     removeText: 'Remove',
     prefill: false,
+    defaultTimeRange: { hours: 1 },
     outputTo: this.$el,
     onChange: function() {},
     onRemove: function() {},
     onInitialize: function() {}
   }, options);
+
+  this.$startPicker = this.options.startPicker;
+  this.$endPicker   = this.options.endPicker;
 
   this.options.onChange     = this.options.onChange.bind(this);
   this.options.onRemove     = this.options.onRemove.bind(this);
@@ -35,6 +45,14 @@ Picker = function(el, options) {
     'click .done': this.onDone,
     'click .remove': this.onRemove
   };
+
+  this.startPickerEvents = {
+    'change': this.setTimeAfterStartPicker
+  }
+
+  this.endPickerEvents = {
+    'change': this.setTimeToBeforeEndPicker
+  }
 
   // Convenience vars
   this.$body   = $('body');
@@ -71,6 +89,11 @@ Picker = function(el, options) {
   this.delegateEvents(this.events, this.$el);
   this.delegateEvents(this.pickerEvents, this.$picker);
   this.handlePickerClose();
+  if (this.isEndPicker()) {
+    this.delegateEvents(this.startPickerEvents, this.$startPicker);
+  } else if (this.isStartPicker()) {
+    this.delegateEvents(this.endPickerEvents, this.$endPicker);
+  }
 
   // Initialize calendar picker
   this.initializeCalendar();

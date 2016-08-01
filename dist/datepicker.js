@@ -1,5 +1,5 @@
 /*
- *  datepicker.js 0.6.0
+ *  datepicker.js 0.7.0
  *  https://github.com/Zeumo/datepicker.js
  *
  *  /!\ Don't edit this file directly!
@@ -15,8 +15,14 @@
   };
 
   Picker = function(el, options) {
-  this.$el   = $(el);
+  this.$el          = $(el);
   this._initialized = false;
+  this.range        = this.initializeRange(options);
+
+  if (this.hasRange()) {
+    this._initialized = true;
+    return this;
+  }
 
   // Options
   this.options = $.extend({
@@ -26,11 +32,15 @@
     doneText: 'Save',
     removeText: 'Remove',
     prefill: false,
+    defaultTimeRange: { hours: 1 },
     outputTo: this.$el,
     onChange: function() {},
     onRemove: function() {},
     onInitialize: function() {}
   }, options);
+
+  this.$startPicker = this.options.startPicker;
+  this.$endPicker   = this.options.endPicker;
 
   this.options.onChange     = this.options.onChange.bind(this);
   this.options.onRemove     = this.options.onRemove.bind(this);
@@ -51,6 +61,14 @@
     'click .done': this.onDone,
     'click .remove': this.onRemove
   };
+
+  this.startPickerEvents = {
+    'change': this.setTimeAfterStartPicker
+  }
+
+  this.endPickerEvents = {
+    'change': this.setTimeToBeforeEndPicker
+  }
 
   // Convenience vars
   this.$body   = $('body');
@@ -87,6 +105,11 @@
   this.delegateEvents(this.events, this.$el);
   this.delegateEvents(this.pickerEvents, this.$picker);
   this.handlePickerClose();
+  if (this.isEndPicker()) {
+    this.delegateEvents(this.startPickerEvents, this.$startPicker);
+  } else if (this.isStartPicker()) {
+    this.delegateEvents(this.endPickerEvents, this.$endPicker);
+  }
 
   // Initialize calendar picker
   this.initializeCalendar();
@@ -206,7 +229,7 @@ Picker.prototype.close = function() {
 Picker.prototype.dateTime = function(offsetHours) {
   offsetHours = offsetHours || 1;
 
-  if (this.hasPrecedingPicker()) {
+  if (this.hasPrecedingPicker() || this.isEndPicker()) {
     offsetHours += 1;
   }
 
@@ -293,6 +316,83 @@ Picker.prototype.serialize = function() {
 Picker.prototype.hasPrecedingPicker = function() {
   var dtp = this.$el.siblings('input').data(pluginName);
   if (dtp) return true;
+};
+
+Picker.prototype.isEndPicker = function() {
+  return !!this.$startPicker;
+};
+
+Picker.prototype.isStartPicker = function() {
+  return !!this.$endPicker;
+};
+
+Picker.prototype.hasRange = function() {
+  return !!this.range.length;
+}
+
+Picker.prototype.initializeRange = function(options) {
+  var children = this.$el.find('input');
+
+  if (children.length !== 2) return [];
+
+  return children.map(function(index) {
+    var rangeOptions;
+
+    if (index === 1) {
+      rangeOptions = $.extend({ startPicker: $(children[0]) }, options);
+    } else {
+      rangeOptions = $.extend({ endPicker: $(children[1]) }, options);
+    }
+    return new Picker(this, rangeOptions);
+  });
+};
+
+Picker.prototype.startPickerDate = function() {
+  return new Date(this.$startPicker.val());
+};
+
+Picker.prototype.endPickerDate = function() {
+  return new Date(this.$endPicker.val());
+};
+
+Picker.prototype.selectedMoment = function() {
+  return moment(new Date(this.options.outputTo.val()));
+};
+
+Picker.prototype.setTimeAfterStartPicker = function() {
+  var startTime      = this.startPickerDate();
+  var newEndTime     = moment(startTime).add(this.options.defaultTimeRange);
+  var currentEndTime = this.selectedMoment()
+
+  // Don't update dateTime if the currentEndTime is already > than startTime
+  if (currentEndTime > startTime) return;
+
+  if (newEndTime.isValid()) {
+    this.setDateTime({
+      date: newEndTime.format(this.options.dateFormat),
+      time: newEndTime.format(this.options.timeFormat)
+    });
+    this.outputDateTime();
+    this.updateCalendar();
+  }
+};
+
+Picker.prototype.setTimeToBeforeEndPicker = function() {
+  var endTime          = this.endPickerDate();
+  var newStartTime     = moment(endTime).subtract(this.options.defaultTimeRange);
+  var currentStartTime = this.selectedMoment()
+
+  // Don't update dateTime if the currentStartTime is already < than endTime
+  if (currentStartTime < endTime) return;
+
+  if (newStartTime.isValid()) {
+    this.setDateTime({
+      date: newStartTime.format(this.options.dateFormat),
+      time: newStartTime.format(this.options.timeFormat)
+    });
+    this.outputDateTime();
+    this.updateCalendar();
+  }
 };
 
 Picker.prototype.initializeCalendar = function() {

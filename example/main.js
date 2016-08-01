@@ -1,5 +1,5 @@
 $(function() {
-  $('.date-range-picker input').picker({
+  $('.date-range-picker').picker({
     onInitialize: function() {
       console.log(this.formattedVal());
     }

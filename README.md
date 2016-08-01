@@ -8,7 +8,7 @@ A Trello-like datepicker with freeform time.
 
 ```javascript
 // jQuery
-$('input').datepicker()
+$('input').picker()
 
 // Vanilla
 new Picker(document.getElementByTagName('input'))
@@ -19,6 +19,12 @@ new Picker(document.getElementByTagName('input'))
 **dateFormat**
 
 Default: `'MM/DD/YYYY'`
+
+**defaultTimeRange**
+
+Default: `{ hours: 1 }`
+
+* Only used with an input range
 
 **doneText**
 
