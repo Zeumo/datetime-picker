@@ -10,6 +10,7 @@ Picker = function(el, options) {
 
   // Options
   this.options = $.extend({
+    startDate: '-0d',
     dateFormat: 'MM/DD/YYYY',
     timeFormat: 'h:mm A',
     template: templates.datepicker,
