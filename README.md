@@ -16,6 +16,10 @@ new Picker(document.getElementByTagName('input'))
 
 ## Options
 
+**startDate**
+
+Default: `'-0d'`
+
 **dateFormat**
 
 Default: `'MM/DD/YYYY'`
