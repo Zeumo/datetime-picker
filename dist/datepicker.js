@@ -1,5 +1,5 @@
 /*
- *  datepicker.js 0.7.0
+ *  datepicker.js 0.8.0
  *  https://github.com/Zeumo/datepicker.js
  *
  *  /!\ Don't edit this file directly!
@@ -26,6 +26,7 @@
 
   // Options
   this.options = $.extend({
+    startDate: '-0d',
     dateFormat: 'MM/DD/YYYY',
     timeFormat: 'h:mm A',
     template: templates.datepicker,
@@ -401,7 +402,7 @@ Picker.prototype.initializeCalendar = function() {
   };
 
   this.$calendar = this.$picker.find('.calendar').datepicker({
-    startDate: '-0d'
+    startDate: this.options.startDate
   });
 
   this.updateCalendar();
@@ -455,7 +456,7 @@ if (!Function.prototype.bind) {
   };
 }
 
-templates["datepicker"] = "<div id=\"datepicker\">  <div class=\"row\">    <div class=\"col-xs-6\">      <label for=\"date-picker\">Date</label>      <input type=\"text\" value=\"{date}\" name=\"date\" id=\"date-picker\" class=\"form-control\">    </div>    <div class=\"col-xs-6\">    <label for=\"time-picker\">Time</label>      <input type=\"text\" value=\"{time}\" name=\"time\" id=\"time-picker\" class=\"form-control\">    </div>  </div>  <div class=\"calendar\"></div>  <a href=\"#\" class=\"btn btn-primary pull-left done\">{doneText}</a>  <a href=\"#\" class=\"btn text-danger pull-right remove hidden\">{removeText}</a></div>";
+templates["datepicker"] = "<div id=\"datepicker\">  <div class=\"row\">    <div class=\"col-xs-6\">      <label for=\"date-picker\">Date</label>      <input type=\"text\" value=\"{date}\" name=\"date\" id=\"date-picker\" class=\"form-control\">    </div>    <div class=\"col-xs-6\">    <label for=\"time-picker\">Time</label>      <input type=\"text\" value=\"{time}\" name=\"time\" id=\"time-picker\" class=\"form-control\">    </div>  </div>  <div class=\"calendar\"></div>  <a href=\"#\" class=\"btn btn-primary btn-sm pull-left done\">{doneText}</a>  <a href=\"#\" class=\"btn btn-sm text-danger pull-right remove hidden\">{removeText}</a></div>";
 
   window.Picker = Picker;
 }(this));
